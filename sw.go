@@ -10,14 +10,14 @@ import (
 )
 
 func main() {
-	script := heredoc.Doc(`
+	gopath := os.Getenv("GOPATH")
+	script := heredoc.Docf(`
 		tell application "iTerm"
-			activate
 			tell current session of current window
-				set background image to "~/Downloads/starwars-avatars/pngs/starwars-r2-d2.png"
+				set background image to "%s/src/github.com/mokuo/StarWars-Terminal/images/r2-d2.png"
 			end tell
 		end tell
-	`)
+	`, gopath)
 
 	app := cli.NewApp()
 	app.Name = "StarWars Terminal"
