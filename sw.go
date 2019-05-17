@@ -15,6 +15,7 @@ func main() {
 		tell application "iTerm"
 			tell current session of current window
 				set background image to "%s/src/github.com/mokuo/StarWars-Terminal/images/r2-d2.png"
+				set transparency to 0.5
 			end tell
 		end tell
 	`, gopath)
