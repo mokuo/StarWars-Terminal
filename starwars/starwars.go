@@ -4,21 +4,25 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 
-	"github.com/MakeNowJust/heredoc"
-	"github.com/urfave/cli"
+	"github.com/MakeNowJust/heredoc/v2"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	gopath := os.Getenv("GOPATH")
+	p, e := filepath.Abs("./images/r2d2.png")
+	if e != nil {
+		log.Fatal(e)
+	}
 	script := heredoc.Docf(`
 		tell application "iTerm"
 			tell current session of current window
-				set background image to "%s/src/github.com/mokuo/StarWars-Terminal/images/r2-d2.png"
+				set background image to "%s"
 				set transparency to 0.5
 			end tell
 		end tell
-	`, gopath)
+	`, p)
 
 	app := cli.NewApp()
 	app.Name = "StarWars Terminal"
