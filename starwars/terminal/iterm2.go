@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path/filepath"
 
 	"github.com/MakeNowJust/heredoc/v2"
 )
@@ -28,12 +27,7 @@ func ScriptPath() string {
 }
 
 // Setup セットアップ
-func (t Iterm2) Setup() {
-	imgPath, absErr := filepath.Abs("./images/r2d2.png")
-	if absErr != nil {
-		log.Fatal(absErr)
-	}
-
+func (t Iterm2) Setup(imgPath string) {
 	script := heredoc.Docf(`
 		#!/usr/bin/env python3.7
 		import iterm2
