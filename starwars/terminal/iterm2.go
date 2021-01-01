@@ -26,7 +26,6 @@ func ScriptPath() string {
 	return homeDir + "/Library/ApplicationSupport/iTerm2/Scripts/starwars.py"
 }
 
-// Setup Set up iTerm2.
 func (t Iterm2) Setup(imgFilePath string) {
 	script := heredoc.Docf(`
 		#!/usr/bin/env python3.7

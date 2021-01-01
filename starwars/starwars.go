@@ -1,91 +1,66 @@
 package main
 
 import (
-	"io/ioutil"
+	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"os/exec"
-	"path/filepath"
-	"time"
+	"strings"
 
 	"github.com/mokuo/starwars-terminal/starwars/terminal"
 	"github.com/urfave/cli/v2"
 )
 
-// Terminal Terminal interface.
-type Terminal interface {
-	Setup()
-	Cmd() string
-	Args() []string
-}
+func starwars(arg string) error {
+	var fileName string
 
-func CharFileList() []os.FileInfo {
-	wd, wdErr := os.Getwd()
-	if wdErr != nil {
-		log.Fatal(wdErr)
+	if arg == "" {
+		fileName = util.RandomCharFileName()
+	} else {
+		fileName = arg + ".png"
 	}
 
-	imgDirPath := filepath.Join(wd, "images")
+	imgFilePath := util.ImgFilePath(fileName)
 
-	files, err := ioutil.ReadDir(imgDirPath)
+	terminal := terminal.NewIterm2()
+	terminal.Setup(imgFilePath)
+
+	err := exec.Command(terminal.Cmd(), terminal.Args()...).Run()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-
-	return files
+	return nil
 }
 
-// RandomCharFileName Return random character name.
-func RandomCharFileName() string {
-	files := CharFileList()
-
-	rand.Seed(time.Now().UnixNano())
-	i := rand.Intn(len(files))
-
-	return files[i].Name()
-}
-
-// ImgFilePath Return file path by character image file name.
-func ImgFilePath(charImgFileName string) string {
-	wd, wdErr := os.Getwd()
-	if wdErr != nil {
-		log.Fatal(wdErr)
+func list() error {
+	files := util.CharFileList()
+	for i := 0; i < len(files); i++ {
+		characterName := strings.Split(files[i].Name(), ".")[0]
+		fmt.Println(characterName)
 	}
 
-	relPath := filepath.Join(wd, "images", charImgFileName)
-	imgFilePath, absErr := filepath.Abs(relPath)
-	if absErr != nil {
-		log.Fatal(absErr)
-	}
-
-	return imgFilePath
+	return nil
 }
 
 func main() {
-	app := cli.NewApp()
-	app.Name = "StarWars Terminal"
-	app.Usage = "May the Force be with you."
-	app.Action = func(c *cli.Context) error {
-		var fileName string
+	app := &cli.App{
+		Name:  "StarWars Terminal",
+		Usage: "May the Force be with you.",
+		Action: func(c *cli.Context) error {
+			firstArg := c.Args().Get(0)
 
-		firstArg := c.Args().Get(0)
-		if firstArg == "" {
-			fileName = RandomCharFileName()
-		} else {
-			fileName = firstArg + ".png"
-		}
-
-		imgFilePath := ImgFilePath(fileName)
-
-		terminal := terminal.NewIterm2()
-		terminal.Setup(imgFilePath)
-
-		err := exec.Command(terminal.Cmd(), terminal.Args()...).Run()
-		if err != nil {
-			return err
-		}
-		return nil
+			return starwars(firstArg)
+		},
+		Commands: []*cli.Command{
+			{
+				Name:    "list",
+				Aliases: []string{"l"},
+				Usage:   "return character list",
+				Action: func(c *cli.Context) error {
+					return list()
+				},
+			},
+		},
 	}
 
 	err := app.Run(os.Args)
