@@ -1,4 +1,4 @@
-package main
+package util
 
 import (
 	"io/ioutil"
@@ -9,11 +9,7 @@ import (
 	"time"
 )
 
-var util = Util{}
-
-type Util struct{}
-
-func (u Util) CharFileList() []os.FileInfo {
+func CharFileList() []os.FileInfo {
 	wd, wdErr := os.Getwd()
 	if wdErr != nil {
 		log.Fatal(wdErr)
@@ -29,8 +25,8 @@ func (u Util) CharFileList() []os.FileInfo {
 	return files
 }
 
-func (u Util) RandomCharFileName() string {
-	files := u.CharFileList()
+func RandomCharFileName() string {
+	files := CharFileList()
 
 	rand.Seed(time.Now().UnixNano())
 	i := rand.Intn(len(files))
@@ -38,7 +34,7 @@ func (u Util) RandomCharFileName() string {
 	return files[i].Name()
 }
 
-func (u Util) ImgFilePath(charImgFileName string) string {
+func ImgFilePath(charImgFileName string) string {
 	wd, wdErr := os.Getwd()
 	if wdErr != nil {
 		log.Fatal(wdErr)
