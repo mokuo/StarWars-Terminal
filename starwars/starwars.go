@@ -1,34 +1,66 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/mokuo/starwars-terminal/starwars/terminal"
 	"github.com/urfave/cli/v2"
 )
 
-// Terminal インターフェース
-type Terminal interface {
-	Setup()
-	Cmd() string
-	Args() []string
+func starwars(arg string) error {
+	var fileName string
+
+	if arg == "" {
+		fileName = util.RandomCharFileName()
+	} else {
+		fileName = arg + ".png"
+	}
+
+	imgFilePath := util.ImgFilePath(fileName)
+
+	terminal := terminal.NewIterm2()
+	terminal.Setup(imgFilePath)
+
+	err := exec.Command(terminal.Cmd(), terminal.Args()...).Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func list() error {
+	files := util.CharFileList()
+	for i := 0; i < len(files); i++ {
+		characterName := strings.Split(files[i].Name(), ".")[0]
+		fmt.Println(characterName)
+	}
+
+	return nil
 }
 
 func main() {
-	terminal := terminal.NewIterm2()
-	terminal.Setup()
+	app := &cli.App{
+		Name:  "StarWars Terminal",
+		Usage: "May the Force be with you.",
+		Action: func(c *cli.Context) error {
+			firstArg := c.Args().Get(0)
 
-	app := cli.NewApp()
-	app.Name = "StarWars Terminal"
-	app.Usage = "May the Force be with you."
-	app.Action = func(c *cli.Context) error {
-		err := exec.Command(terminal.Cmd(), terminal.Args()...).Run()
-		if err != nil {
-			return err
-		}
-		return nil
+			return starwars(firstArg)
+		},
+		Commands: []*cli.Command{
+			{
+				Name:    "list",
+				Aliases: []string{"l"},
+				Usage:   "return character list",
+				Action: func(c *cli.Context) error {
+					return list()
+				},
+			},
+		},
 	}
 
 	err := app.Run(os.Args)
