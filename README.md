@@ -5,13 +5,8 @@ StarWars terminal themes inspired at [Pokemon-Terminal](https://github.com/LazoC
 ## Development
 
 ```
-cd starwars/
-go build
+go build -o starwars
 ./starwars
-
-# or
-go install
-starwars
 ```
 
 ### Generate images

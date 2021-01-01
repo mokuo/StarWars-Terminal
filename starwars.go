@@ -7,7 +7,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/mokuo/starwars-terminal/starwars/terminal"
+	"github.com/mokuo/starwars-terminal/terminal"
+	"github.com/mokuo/starwars-terminal/util"
 	"github.com/urfave/cli/v2"
 )
 
