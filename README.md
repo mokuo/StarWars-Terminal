@@ -5,6 +5,9 @@ StarWars terminal themes inspired at [Pokemon-Terminal](https://github.com/LazoC
 ## Development
 
 ```
+go run starwars.go
+
+# or
 go build -o starwars
 ./starwars
 ```

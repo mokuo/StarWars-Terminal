@@ -4,63 +4,100 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
+	"sort"
+	"strings"
 
 	"github.com/MakeNowJust/heredoc/v2"
+	"github.com/mokuo/starwars-terminal/util"
 )
 
-// Iterm2 iTerm2
-type Iterm2 struct{}
-
-// NewIterm2 Constructor
 func NewIterm2() Iterm2 {
 	return Iterm2{}
 }
 
-// ScriptPath Return script path.
-func ScriptPath() string {
-	homeDir, err := os.UserHomeDir()
-	if err != err {
-		log.Fatal(err)
-	}
-
-	return homeDir + "/Library/ApplicationSupport/iTerm2/Scripts/starwars.py"
-}
+type Iterm2 struct{}
 
 func (t Iterm2) Setup(imgFilePath string) {
 	script := heredoc.Docf(`
-		#!/usr/bin/env python3.7
+		#!/usr/bin/env python3
 		import iterm2
 		
 		async def main(connection):
-			app = await iterm2.async_get_app(connection)
-			# ref: https://iterm2.com/python-api/examples/setprofile.html
-			current_profile = await app.current_terminal_window.current_tab.current_session.async_get_profile()
+		    app = await iterm2.async_get_app(connection)
+		    # ref: https://iterm2.com/python-api/examples/setprofile.html
+		    current_profile = await app.current_terminal_window.current_tab.current_session.async_get_profile()
 		
-			# ref: https://iterm2.com/python-api/profile.html?highlight=backgroundimagemode#iterm2.Profile.async_set_background_image_location
-			await current_profile.async_set_background_image_location("%s")
-			# ref: https://iterm2.com/python-api/profile.html?highlight=backgroundimagemode#iterm2.BackgroundImageMode
-			await current_profile.async_set_background_image_mode(1)
+		    # ref: https://iterm2.com/python-api/profile.html?highlight=backgroundimagemode#iterm2.Profile.async_set_background_image_location
+		    await current_profile.async_set_background_image_location("%s")
+		    # ref: https://iterm2.com/python-api/profile.html?highlight=backgroundimagemode#iterm2.BackgroundImageMode
+		    await current_profile.async_set_background_image_mode(1)
 		
 		iterm2.run_until_complete(main)
 	`, imgFilePath)
 
-	err := ioutil.WriteFile(ScriptPath(), []byte(script), 0644)
+	err := ioutil.WriteFile(scriptpath(), []byte(script), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-// Cmd Return command name.
+// Cmd Return latest python3 path.
 func (t Iterm2) Cmd() string {
+	pythonDirPath := filepath.Join(iterm2home(), "iterm2env", "versions")
+
+	files, err := ioutil.ReadDir(pythonDirPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// ~/Library/ApplicationSupport/iTerm2/iterm2env/versions/*/bin/python3
+	// ref: https://iterm2.com/python-api/tutorial/running.html#command-line
+	return filepath.Join(pythonDirPath, latestVersion(files), "bin", "python3")
+}
+
+// Args Return command arguments.
+func (t Iterm2) Args() []string {
+	return []string{scriptpath()}
+}
+
+func iterm2home() string {
 	homeDir, err := os.UserHomeDir()
 	if err != err {
 		log.Fatal(err)
 	}
 
-	return homeDir + "/Library/ApplicationSupport/iTerm2/iterm2env/versions/3.7.9/bin/python3"
+	return filepath.Join(homeDir, "Library", "ApplicationSupport", "iTerm2")
 }
 
-// Args Return command arguments.
-func (t Iterm2) Args() []string {
-	return []string{ScriptPath()}
+func scriptpath() string {
+	return filepath.Join(iterm2home(), "Scripts", "starwars.py")
+}
+
+func latestVersion(files []os.FileInfo) string {
+	sort.Slice(files, func(i, j int) bool {
+		// i
+		iversionsStr := strings.Split(files[i].Name(), ".")
+		iversions := util.Strings2int(iversionsStr)
+		iMajor := iversions[0]
+		iMinor := iversions[1]
+		iPatch := iversions[2]
+
+		// j
+		jversionsStr := strings.Split(files[j].Name(), ".")
+		jversions := util.Strings2int(jversionsStr)
+		jMajor := jversions[0]
+		jMinor := jversions[1]
+		jPatch := jversions[2]
+
+		if iMajor != jMajor {
+			return iMajor > jMajor
+		}
+		if iMinor != jMinor {
+			return iMinor > jMinor
+		}
+		return iPatch > jPatch
+	})
+
+	return files[0].Name()
 }

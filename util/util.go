@@ -1,50 +1,20 @@
 package util
 
 import (
-	"io/ioutil"
 	"log"
-	"math/rand"
-	"os"
-	"path/filepath"
-	"time"
+	"strconv"
 )
 
-func CharFileList() []os.FileInfo {
-	wd, wdErr := os.Getwd()
-	if wdErr != nil {
-		log.Fatal(wdErr)
+func Strings2int(s []string) []int {
+	a := make([]int, len(s))
+
+	for i := 0; i < len(s); i++ {
+		n, err := strconv.Atoi(s[i])
+		if err != nil {
+			log.Fatal(err)
+		}
+		a[i] = n
 	}
 
-	imgDirPath := filepath.Join(wd, "images")
-
-	files, err := ioutil.ReadDir(imgDirPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return files
-}
-
-func RandomCharFileName() string {
-	files := CharFileList()
-
-	rand.Seed(time.Now().UnixNano())
-	i := rand.Intn(len(files))
-
-	return files[i].Name()
-}
-
-func ImgFilePath(charImgFileName string) string {
-	wd, wdErr := os.Getwd()
-	if wdErr != nil {
-		log.Fatal(wdErr)
-	}
-
-	relPath := filepath.Join(wd, "images", charImgFileName)
-	imgFilePath, absErr := filepath.Abs(relPath)
-	if absErr != nil {
-		log.Fatal(absErr)
-	}
-
-	return imgFilePath
+	return a
 }
