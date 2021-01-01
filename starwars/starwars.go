@@ -20,8 +20,7 @@ type Terminal interface {
 	Args() []string
 }
 
-// RandomCharFileName Return random character name.
-func RandomCharFileName() string {
+func CharFileList() []os.FileInfo {
 	wd, wdErr := os.Getwd()
 	if wdErr != nil {
 		log.Fatal(wdErr)
@@ -33,6 +32,13 @@ func RandomCharFileName() string {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	return files
+}
+
+// RandomCharFileName Return random character name.
+func RandomCharFileName() string {
+	files := CharFileList()
 
 	rand.Seed(time.Now().UnixNano())
 	i := rand.Intn(len(files))
@@ -48,12 +54,12 @@ func ImgFilePath(charImgFileName string) string {
 	}
 
 	relPath := filepath.Join(wd, "images", charImgFileName)
-	imgPath, absErr := filepath.Abs(relPath)
+	imgFilePath, absErr := filepath.Abs(relPath)
 	if absErr != nil {
 		log.Fatal(absErr)
 	}
 
-	return imgPath
+	return imgFilePath
 }
 
 func main() {
@@ -61,11 +67,19 @@ func main() {
 	app.Name = "StarWars Terminal"
 	app.Usage = "May the Force be with you."
 	app.Action = func(c *cli.Context) error {
-		fname := RandomCharFileName()
-		imgPath := ImgFilePath(fname)
+		var fileName string
+
+		firstArg := c.Args().Get(0)
+		if firstArg == "" {
+			fileName = RandomCharFileName()
+		} else {
+			fileName = firstArg + ".png"
+		}
+
+		imgFilePath := ImgFilePath(fileName)
 
 		terminal := terminal.NewIterm2()
-		terminal.Setup(imgPath)
+		terminal.Setup(imgFilePath)
 
 		err := exec.Command(terminal.Cmd(), terminal.Args()...).Run()
 		if err != nil {

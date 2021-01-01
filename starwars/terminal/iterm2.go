@@ -11,12 +11,12 @@ import (
 // Iterm2 iTerm2
 type Iterm2 struct{}
 
-// NewIterm2 コンストラクタ
+// NewIterm2 Constructor
 func NewIterm2() Iterm2 {
 	return Iterm2{}
 }
 
-// ScriptPath スクリプトのパスを返す
+// ScriptPath Return script path.
 func ScriptPath() string {
 	homeDir, err := os.UserHomeDir()
 	if err != err {
@@ -26,8 +26,8 @@ func ScriptPath() string {
 	return homeDir + "/Library/ApplicationSupport/iTerm2/Scripts/starwars.py"
 }
 
-// Setup セットアップ
-func (t Iterm2) Setup(imgPath string) {
+// Setup Set up iTerm2.
+func (t Iterm2) Setup(imgFilePath string) {
 	script := heredoc.Docf(`
 		#!/usr/bin/env python3.7
 		import iterm2
@@ -43,7 +43,7 @@ func (t Iterm2) Setup(imgPath string) {
 			await current_profile.async_set_background_image_mode(1)
 		
 		iterm2.run_until_complete(main)
-	`, imgPath)
+	`, imgFilePath)
 
 	err := ioutil.WriteFile(ScriptPath(), []byte(script), 0644)
 	if err != nil {
@@ -51,7 +51,7 @@ func (t Iterm2) Setup(imgPath string) {
 	}
 }
 
-// Cmd 実行コマンド
+// Cmd Return command name.
 func (t Iterm2) Cmd() string {
 	homeDir, err := os.UserHomeDir()
 	if err != err {
@@ -61,7 +61,7 @@ func (t Iterm2) Cmd() string {
 	return homeDir + "/Library/ApplicationSupport/iTerm2/iterm2env/versions/3.7.9/bin/python3"
 }
 
-// Args コマンドの引数
+// Args Return command arguments.
 func (t Iterm2) Args() []string {
 	return []string{ScriptPath()}
 }
