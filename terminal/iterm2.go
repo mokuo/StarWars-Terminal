@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"strings"
 
 	"github.com/MakeNowJust/heredoc/v2"
 	"github.com/mokuo/starwars-terminal/util"
@@ -76,19 +75,8 @@ func scriptpath() string {
 
 func latestVersion(files []os.FileInfo) string {
 	sort.Slice(files, func(i, j int) bool {
-		// i
-		iversionsStr := strings.Split(files[i].Name(), ".")
-		iversions := util.Strings2int(iversionsStr)
-		iMajor := iversions[0]
-		iMinor := iversions[1]
-		iPatch := iversions[2]
-
-		// j
-		jversionsStr := strings.Split(files[j].Name(), ".")
-		jversions := util.Strings2int(jversionsStr)
-		jMajor := jversions[0]
-		jMinor := jversions[1]
-		jPatch := jversions[2]
+		iMajor, iMinor, iPatch := util.GetVersions(files[i].Name())
+		jMajor, jMinor, jPatch := util.GetVersions(files[i].Name())
 
 		if iMajor != jMajor {
 			return iMajor > jMajor
