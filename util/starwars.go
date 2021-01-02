@@ -10,15 +10,7 @@ import (
 )
 
 func CharFileList() []os.FileInfo {
-	exe, exeErr := os.Executable()
-	if exeErr != nil {
-		log.Fatal(exeErr)
-	}
-
-	exeDir := filepath.Dir(exe)
-	imgDirPath := filepath.Join(exeDir, "images")
-
-	files, err := ioutil.ReadDir(imgDirPath)
+	files, err := ioutil.ReadDir(imgdir())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,17 +28,26 @@ func RandomCharFileName() string {
 }
 
 func ImgFilePath(charImgFileName string) string {
-	exe, exeErr := os.Executable()
-	if exeErr != nil {
-		log.Fatal(exeErr)
-	}
-
-	exeDir := filepath.Dir(exe)
-	relPath := filepath.Join(exeDir, "images", charImgFileName)
+	relPath := filepath.Join(imgdir(), charImgFileName)
 	imgFilePath, absErr := filepath.Abs(relPath)
 	if absErr != nil {
 		log.Fatal(absErr)
 	}
 
 	return imgFilePath
+}
+
+func imgdir() string {
+	exe, exeErr := os.Executable()
+	if exeErr != nil {
+		log.Fatal(exeErr)
+	}
+
+	sym, symErr := filepath.EvalSymlinks(exe)
+	if symErr != nil {
+		log.Fatal(symErr)
+	}
+
+	symDir := filepath.Dir(sym)
+	return filepath.Join(symDir, "images")
 }
