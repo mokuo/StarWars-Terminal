@@ -10,12 +10,13 @@ import (
 )
 
 func CharFileList() []os.FileInfo {
-	wd, wdErr := os.Getwd()
-	if wdErr != nil {
-		log.Fatal(wdErr)
+	exe, exeErr := os.Executable()
+	if exeErr != nil {
+		log.Fatal(exeErr)
 	}
 
-	imgDirPath := filepath.Join(wd, "images")
+	exeDir := filepath.Dir(exe)
+	imgDirPath := filepath.Join(exeDir, "images")
 
 	files, err := ioutil.ReadDir(imgDirPath)
 	if err != nil {
@@ -35,12 +36,13 @@ func RandomCharFileName() string {
 }
 
 func ImgFilePath(charImgFileName string) string {
-	wd, wdErr := os.Getwd()
-	if wdErr != nil {
-		log.Fatal(wdErr)
+	exe, exeErr := os.Executable()
+	if exeErr != nil {
+		log.Fatal(exeErr)
 	}
 
-	relPath := filepath.Join(wd, "images", charImgFileName)
+	exeDir := filepath.Dir(exe)
+	relPath := filepath.Join(exeDir, "images", charImgFileName)
 	imgFilePath, absErr := filepath.Abs(relPath)
 	if absErr != nil {
 		log.Fatal(absErr)
