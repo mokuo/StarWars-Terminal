@@ -1,4 +1,4 @@
-package main
+package starwars
 
 import (
 	"fmt"
@@ -43,7 +43,7 @@ func list() error {
 	return nil
 }
 
-func main() {
+func Run() {
 	app := &cli.App{
 		Name:  "StarWars Terminal",
 		Usage: "May the Force be with you.",
