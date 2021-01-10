@@ -47,7 +47,7 @@ func Run() {
 	app := &cli.App{
 		Name:    "StarWars Terminal",
 		Usage:   "May the Force be with you.",
-		Version: "v0.0.2",
+		Version: Version(),
 		Action: func(c *cli.Context) error {
 			firstArg := c.Args().Get(0)
 
@@ -69,4 +69,9 @@ func Run() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// Version Return StarWars-Terminal version.
+func Version() string {
+	return "v" + VERSION
 }
