@@ -15,7 +15,7 @@ func latestReleaseVersion() string {
 
 func main() {
 	version := starwars.Version()
-	cmd := exec.Command("lerna-changelog", "--from="+latestReleaseVersion())
+	cmd := exec.Command("lerna-changelog", "--from="+latestReleaseVersion(), "--next-version="+version)
 	output, err := cmd.Output()
 	if err != nil {
 		log.Fatal(err)
