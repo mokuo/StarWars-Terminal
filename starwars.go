@@ -70,8 +70,3 @@ func Run() {
 		log.Fatal(err)
 	}
 }
-
-// Version Return StarWars-Terminal version.
-func Version() string {
-	return "v" + VERSION
-}
