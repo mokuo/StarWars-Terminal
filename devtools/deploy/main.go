@@ -14,15 +14,20 @@ func latestReleaseVersion() string {
 }
 
 func main() {
-	version := starwars.Version()
-	cmd := exec.Command("lerna-changelog", "--from="+latestReleaseVersion(), "--next-version="+version)
+	currentVersion := latestReleaseVersion()
+	nextVersion := starwars.Version()
+	if currentVersion == nextVersion {
+		log.Fatal("Update the version of version.go file.")
+	}
+
+	cmd := exec.Command("lerna-changelog", "--from="+currentVersion, "--next-version="+nextVersion)
 	output, outputErr := cmd.Output()
 	if outputErr != nil {
 		log.Fatal(outputErr)
 	}
 
 	changelog := string(output)
-	release := CreateRelease(version, changelog)
+	release := CreateRelease(nextVersion, changelog)
 
 	fmt.Println("Created release: " + *release.Name)
 	fmt.Println("Tarball URL: " + *release.TarballURL)
