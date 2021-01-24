@@ -31,6 +31,8 @@ jobs:
           go-version: '1.15.6'
       - name: Build
         run: go build
+      - name: debug
+        run: git log -n 25
       - name: Deploy
         env:
           GITHUB_AUTH: ${{ secrets.AUTH_TOKEN }}
