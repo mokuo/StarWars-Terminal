@@ -26,14 +26,15 @@ Merge PR to `master` branch.
 ## Deploy from local machine
 
 1. Install [lerna-changelog](https://github.com/lerna/lerna-changelog).
-2. Get [personal access token](https://github.com/settings/tokens) ( `public_repo` scope) for `GITHUB_TOKEN` .
+2. Get [personal access token](https://github.com/settings/tokens) ( `public_repo` scope) for `GITHUB_AUTH` .
+    - go-git, go-github, lerna-changelog use `GITHUB_AUTH`
 3. Change `version` of version.go before deploy.
 4. Deploy:
 
 ```zsh
 cd devtools/deploy
 go build
-GITHUB_TOKEN=xxx ./deploy
+GITHUB_AUTH=xxx ./deploy
 
 # check
 brew uninstall starwars-terminal

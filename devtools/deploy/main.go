@@ -23,6 +23,7 @@ func main() {
 	cmd := exec.Command("lerna-changelog", "--from="+currentVersion, "--next-version="+nextVersion)
 	output, outputErr := cmd.Output()
 	if outputErr != nil {
+		fmt.Println(string(output))
 		log.Fatal(outputErr)
 	}
 
@@ -30,7 +31,6 @@ func main() {
 	release := CreateRelease(nextVersion, changelog)
 
 	fmt.Println("Created release: " + *release.Name)
-	fmt.Println("Tarball URL: " + *release.TarballURL)
 
 	UpdateFormula(*release.TarballURL)
 

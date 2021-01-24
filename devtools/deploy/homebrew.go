@@ -114,7 +114,7 @@ func gitPush(repo *git.Repository) {
 	pushErr := repo.Push(&git.PushOptions{
 		Auth: &gitHttp.BasicAuth{
 			Username: "mokuo",
-			Password: os.Getenv("GITHUB_TOKEN"),
+			Password: os.Getenv("GITHUB_AUTH"),
 		},
 	})
 	if pushErr != nil {

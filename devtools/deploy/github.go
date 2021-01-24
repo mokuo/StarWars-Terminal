@@ -11,7 +11,7 @@ import (
 )
 
 func repositoriesService(ctx context.Context) *github.RepositoriesService {
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")})
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: os.Getenv("GITHUB_AUTH")})
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 	return client.Repositories
