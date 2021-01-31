@@ -1,6 +1,6 @@
 package starwars
 
-const version = "0.1.3"
+const version = "0.1.4"
 
 // Version Return StarWars-Terminal version.
 func Version() string {

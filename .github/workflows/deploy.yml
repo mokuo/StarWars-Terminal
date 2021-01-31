@@ -31,8 +31,14 @@ jobs:
           go-version: '1.15.6'
       - name: Build
         run: go build
-      - name: debug
-        run: git log -n 25
+      - name: debug1
+        run: git worktree list
+      - name: debug2
+        run: git show HEAD
+      - name: debug3
+        run: git show v0.1.1
+      - name: debug4
+        run: git log v0.1.1..HEAD
       - name: Deploy
         env:
           GITHUB_AUTH: ${{ secrets.AUTH_TOKEN }}
