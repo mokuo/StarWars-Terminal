@@ -15,7 +15,7 @@ func latestReleaseVersion() string {
 
 func main() {
 	currentVersion := latestReleaseVersion()
-	nextVersion := starwars.Version()
+	nextVersion := "v" + starwars.VERSION
 	if currentVersion == nextVersion {
 		log.Fatal("Update the version of version.go file.")
 	}

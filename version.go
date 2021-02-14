@@ -1,8 +1,4 @@
 package starwars
 
-const version = "0.1.2"
-
-// Version Return StarWars-Terminal version.
-func Version() string {
-	return "v" + version
-}
+// VERSION StarWars-Terminal version.
+const VERSION = "0.1.2"

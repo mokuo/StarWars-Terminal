@@ -4,50 +4,32 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
-	"os"
-	"path/filepath"
+	"strings"
 	"time"
 )
 
-func CharFileList() []os.FileInfo {
-	files, err := ioutil.ReadDir(imgdir())
+// RandomCharName Return random character name.
+func RandomCharName() string {
+	charNames := CharNames()
+
+	rand.Seed(time.Now().UnixNano())
+	i := rand.Intn(len(charNames))
+
+	return charNames[i]
+}
+
+// CharNames Return character names.
+func CharNames() []string {
+	files, err := ioutil.ReadDir(ImgDirPath())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return files
-}
-
-func RandomCharFileName() string {
-	files := CharFileList()
-
-	rand.Seed(time.Now().UnixNano())
-	i := rand.Intn(len(files))
-
-	return files[i].Name()
-}
-
-func ImgFilePath(charImgFileName string) string {
-	relPath := filepath.Join(imgdir(), charImgFileName)
-	imgFilePath, absErr := filepath.Abs(relPath)
-	if absErr != nil {
-		log.Fatal(absErr)
+	charNames := make([]string, len(files))
+	for i := 0; i < len(files); i++ {
+		fileName := files[i].Name()
+		charNames[i] = strings.Split(fileName, ".")[0]
 	}
 
-	return imgFilePath
-}
-
-func imgdir() string {
-	exe, exeErr := os.Executable()
-	if exeErr != nil {
-		log.Fatal(exeErr)
-	}
-
-	sym, symErr := filepath.EvalSymlinks(exe)
-	if symErr != nil {
-		log.Fatal(symErr)
-	}
-
-	symDir := filepath.Dir(sym)
-	return filepath.Join(symDir, "images")
+	return charNames
 }
