@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func Strings2int(s []string) []int {
+func strs2ints(s []string) []int {
 	a := make([]int, len(s))
 
 	for i := 0; i < len(s); i++ {
@@ -20,10 +20,10 @@ func Strings2int(s []string) []int {
 	return a
 }
 
-// ex) 1.2.3 => 1, 2, 3
+// GetVersions ex) "1.2.3" => 1, 2, 3
 func GetVersions(s string) (int, int, int) {
 	versions := strings.Split(s, ".")
-	v := Strings2int(versions)
+	v := strs2ints(versions)
 	major := v[0]
 	minor := v[1]
 	patch := v[2]
