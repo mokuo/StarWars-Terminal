@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 
@@ -17,7 +18,26 @@ func NewIterm2() Iterm2 {
 
 type Iterm2 struct{}
 
-func (t Iterm2) Setup(imgFilePath string) {
+func (t Iterm2) Starwars(arg string) error {
+	var charName string
+
+	if arg == "" {
+		charName = util.RandomCharName()
+	} else {
+		charName = arg
+	}
+
+	imgFilePath := util.ImgFilePath(charName)
+	setup(imgFilePath)
+
+	err := exec.Command(cmd(), args()...).Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func setup(imgFilePath string) {
 	script := heredoc.Docf(`
 		#!/usr/bin/env python3
 		import iterm2
@@ -42,7 +62,7 @@ func (t Iterm2) Setup(imgFilePath string) {
 }
 
 // Cmd Return latest python3 path.
-func (t Iterm2) Cmd() string {
+func cmd() string {
 	pythonDirPath := filepath.Join(iterm2home(), "iterm2env", "versions")
 
 	files, err := ioutil.ReadDir(pythonDirPath)
@@ -56,7 +76,7 @@ func (t Iterm2) Cmd() string {
 }
 
 // Args Return command arguments.
-func (t Iterm2) Args() []string {
+func args() []string {
 	return []string{scriptpath()}
 }
 
