@@ -2,46 +2,18 @@ package starwars
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/mokuo/starwars-terminal/terminal"
 	"github.com/mokuo/starwars-terminal/util"
 	"github.com/urfave/cli/v2"
 )
-
-func starwars(arg string) error {
-	var fileName string
-
-	if arg == "" {
-		fileName = util.RandomCharFileName()
-	} else {
-		fileName = arg + ".png"
-	}
-
-	imgFilePath := util.ImgFilePath(fileName)
-
-	terminal := terminal.NewIterm2()
-	terminal.Setup(imgFilePath)
-
-	err := exec.Command(terminal.Cmd(), terminal.Args()...).Run()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func list() error {
-	files := util.CharFileList()
-	for i := 0; i < len(files); i++ {
-		characterName := strings.Split(files[i].Name(), ".")[0]
-		fmt.Println(characterName)
-	}
-
-	return nil
-}
 
 func Run() {
 	app := &cli.App{
@@ -69,4 +41,58 @@ func Run() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func starwars(arg string) error {
+	var charName string
+
+	if arg == "" {
+		charName = randomCharName()
+	} else {
+		charName = arg
+	}
+
+	imgFilePath := util.ImgFilePath(charName)
+
+	terminal := terminal.NewIterm2()
+	terminal.Setup(imgFilePath)
+
+	err := exec.Command(terminal.Cmd(), terminal.Args()...).Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func list() error {
+	charNames := charNames()
+	for i := 0; i < len(charNames); i++ {
+		fmt.Println(charNames[i])
+	}
+
+	return nil
+}
+
+func charNames() []string {
+	files, err := ioutil.ReadDir(util.ImgDirPath())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	charNames := make([]string, len(files))
+	for i := 0; i < len(files); i++ {
+		fileName := files[i].Name()
+		charNames[i] = strings.Split(fileName, ".")[0]
+	}
+
+	return charNames
+}
+
+func randomCharName() string {
+	charNames := charNames()
+
+	rand.Seed(time.Now().UnixNano())
+	i := rand.Intn(len(charNames))
+
+	return charNames[i]
 }
