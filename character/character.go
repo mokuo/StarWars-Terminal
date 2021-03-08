@@ -1,4 +1,4 @@
-package util
+package character
 
 import (
 	"io/ioutil"
@@ -6,6 +6,8 @@ import (
 	"math/rand"
 	"strings"
 	"time"
+
+	"github.com/mokuo/starwars-terminal/util"
 )
 
 // RandomCharName Return random character name.
@@ -20,7 +22,7 @@ func RandomCharName() string {
 
 // CharNames Return character names.
 func CharNames() []string {
-	files, err := ioutil.ReadDir(ImgDirPath())
+	files, err := ioutil.ReadDir(util.ImgDirPath())
 	if err != nil {
 		log.Fatal(err)
 	}
