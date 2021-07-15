@@ -9,7 +9,7 @@ Example:
 
 ## Installation
 
-Install `starwars` command:
+Install `sw` command:
 
 ```zsh
 brew tap mokuo/starwars-terminal
@@ -26,14 +26,14 @@ If requested, I would like to support more terminal emulators!
 
 ```zsh
 # Change the background image to a Star Wars character (random).
-starwars
+sw
 
 # You can specify the character name.
 # ex) R2-D2
-starwars r2-d2
+sw r2-d2
 
 # List character names.
-starwars list
+sw list
 ```
 
 ## Trouble shooting
