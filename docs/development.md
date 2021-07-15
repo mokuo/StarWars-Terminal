@@ -8,6 +8,12 @@ go build
 ./starwars
 ```
 
+## Test
+
+```zsh
+go test ./...
+```
+
 ## Generate images
 
 Install ImageMagick 7 (or 6).
