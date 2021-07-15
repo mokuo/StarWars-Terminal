@@ -28,7 +28,7 @@ func TestGetVersions(t *testing.T) {
 }
 
 func TestImgFilePath(t *testing.T) {
-	expect := "cmd/starwars/images/bb-8.png"
+	expect := "cmd/sw/images/bb-8.png"
 	actual := ImgFilePath("bb-8")
 
 	if !strings.HasSuffix(actual, expect) {
