@@ -102,7 +102,7 @@ func gitCommit(wt *git.Worktree) {
 		Email: "tennis10988.yk@gmail.com",
 		When:  time.Now(),
 	}
-	_, commitErr := wt.Commit(starwars.VERSION, &git.CommitOptions{
+	_, commitErr := wt.Commit("v" + starwars.VERSION, &git.CommitOptions{
 		Author: author,
 	})
 	if commitErr != nil {
