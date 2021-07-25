@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/mokuo/starwars-terminal/character"
 	"github.com/mokuo/starwars-terminal/terminal"
-	"github.com/mokuo/starwars-terminal/util"
 	"github.com/urfave/cli/v2"
 )
 
@@ -40,7 +40,7 @@ func Run() {
 }
 
 func list() error {
-	charNames := util.CharNames()
+	charNames := character.CharNames()
 	for i := 0; i < len(charNames); i++ {
 		fmt.Println(charNames[i])
 	}

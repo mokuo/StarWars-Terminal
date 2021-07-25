@@ -9,6 +9,7 @@ import (
 	"sort"
 
 	"github.com/MakeNowJust/heredoc/v2"
+	"github.com/mokuo/starwars-terminal/character"
 	"github.com/mokuo/starwars-terminal/util"
 )
 
@@ -22,7 +23,7 @@ func (t Iterm2) Starwars(arg string) error {
 	var charName string
 
 	if arg == "" {
-		charName = util.RandomCharName()
+		charName = character.RandomCharName()
 	} else {
 		charName = arg
 	}

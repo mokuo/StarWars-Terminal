@@ -55,7 +55,7 @@ func GetVersions(s string) (int, int, int) {
 }
 
 func testImgDir() string {
-	path, err := filepath.Abs("../cmd/starwars/images")
+	path, err := filepath.Abs("../cmd/sw/images")
 	if err != nil {
 		log.Fatal(err)
 	}
