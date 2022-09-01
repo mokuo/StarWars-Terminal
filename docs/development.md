@@ -23,11 +23,20 @@ Install ImageMagick 7 (or 6).
 composite -dissolve 40%x60% original_images/512x512_black.png original_images/starwars-bb-8.png cmd/sw/images/bb-8.png
 ```
 
+## Update packages
+
+```
+asdf list all golang
+asdf update golang {VERSION}
+go get -u
+go mod tidy
+```
+
 ## Deploy with GitHub Actions
 
-Apply label to PR. (ref: [lerna-changelog](https://github.com/lerna/lerna-changelog))
-
-Merge PR to `master` branch.
+1. Apply label to PR. (ref: [lerna-changelog](https://github.com/lerna/lerna-changelog))
+  - ※ Change `version` of version.go before deploy
+2. Merge PR to `master` branch.
 
 ## Deploy from local machine
 

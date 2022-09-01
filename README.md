@@ -4,8 +4,7 @@ StarWars terminal themes inspired at [Pokemon-Terminal](https://github.com/LazoC
 
 Example:
 
-![r2-d2](docs/images/r2-d2.png)
-![yoda](docs/images/yoda.png)
+![demo](docs/images/demo.gif)
 
 ## Installation
 
