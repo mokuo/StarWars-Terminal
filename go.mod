@@ -27,7 +27,7 @@ require (
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	golang.org/x/net v0.0.0-20201021035429-f5854403a974 // indirect
-	golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f // indirect
+	golang.org/x/sys v0.0.0-20220927170352-d9d178bc13c6 // indirect
 	google.golang.org/appengine v1.1.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
