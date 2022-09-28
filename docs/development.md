@@ -27,7 +27,9 @@ composite -dissolve 40%x60% original_images/512x512_black.png original_images/st
 
 ```
 asdf list all golang
-asdf update golang {VERSION}
+asdf install golang {VERSION}
+asdf local golang {VERSION}
+go mod edit -go={VERSION}
 go get -u
 go mod tidy
 ```
