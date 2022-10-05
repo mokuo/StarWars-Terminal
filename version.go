@@ -1,4 +1,4 @@
 package starwars
 
 // VERSION StarWars-Terminal version.
-const VERSION = "0.1.3"
+const VERSION = "0.1.4"
