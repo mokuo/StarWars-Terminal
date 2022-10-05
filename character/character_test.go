@@ -7,16 +7,10 @@ import (
 
 var ExpectCharNames = []string{
 	"bb-8",
-	"boba-fett",
 	"c-3po",
 	"chewbacca",
-	"darth-vader",
-	"darth_maul",
 	"princess_amidala",
 	"r2-d2",
-	"royal_guard",
-	"stormtrooper",
-	"the_emperor",
 	"yoda",
 }
 
