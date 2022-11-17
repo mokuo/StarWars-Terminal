@@ -71,7 +71,7 @@ func cmd() string {
 		log.Fatal(err)
 	}
 
-	// ~/Library/ApplicationSupport/iTerm2/iterm2env/versions/*/bin/python3
+	// ~/Library/Application Support/iTerm2/iterm2env/versions/*/bin/python3
 	// ref: https://iterm2.com/python-api/tutorial/running.html#command-line
 	return filepath.Join(pythonDirPath, latestVersion(files), "bin", "python3")
 }
@@ -87,7 +87,7 @@ func iterm2home() string {
 		log.Fatal(err)
 	}
 
-	return filepath.Join(homeDir, "Library", "ApplicationSupport", "iTerm2")
+	return filepath.Join(homeDir, "Library", "Application Support", "iTerm2")
 }
 
 func scriptpath() string {
